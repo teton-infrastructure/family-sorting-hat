@@ -1,0 +1,143 @@
+:root{
+  --ink:#3a2412; --ink-soft:#6b4a2b; --gold:#d9a441; --gold-hi:#f3d27a;
+  --parch:#f4e4c1; --parch-dark:#e2c992; --night:#1a1008;
+  --house-a:#7f0909; --house-b:#d3a625;
+  --serif:"IM Fell English", Georgia, "Times New Roman", serif;
+  --title:"Cinzel Decorative", "IM Fell English", Georgia, serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:var(--serif); color:var(--ink);
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(255,190,90,.35), transparent 55%),
+    radial-gradient(ellipse at 10% 100%, rgba(255,140,40,.18), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(255,140,40,.18), transparent 50%),
+    linear-gradient(#24160b, var(--night));
+  min-height:100vh; display:flex; flex-direction:column; align-items:center;
+  -webkit-tap-highlight-color:transparent; overflow-x:hidden;
+}
+#app{width:100%; max-width:720px; padding:18px 14px 8px; flex:1; position:relative; z-index:1}
+.screen{display:none; animation:fadeIn .5s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
+
+/* floating candles */
+.candles{position:fixed; inset:0; pointer-events:none; z-index:0}
+.candles span{position:absolute; width:10px; height:46px; background:linear-gradient(#fff6df,#e8d3a6); border-radius:3px;
+  box-shadow:0 0 24px 6px rgba(255,190,90,.12); animation:float 6s ease-in-out infinite}
+.candles span::before{content:""; position:absolute; left:50%; top:-16px; width:10px; height:16px; margin-left:-5px;
+  background:radial-gradient(ellipse at 50% 70%, #fff 0 20%, #ffd36b 40%, #ff8a1e 70%, transparent 72%);
+  border-radius:50% 50% 50% 50%/60% 60% 40% 40%; filter:blur(.3px); animation:flicker .18s infinite alternate}
+.candles span::after{content:""; position:absolute; left:50%; top:-40px; width:60px; height:60px; margin-left:-30px;
+  background:radial-gradient(circle, rgba(255,200,100,.35), transparent 65%)}
+.candles span:nth-child(1){left:6%; top:8%; animation-delay:-1s}
+.candles span:nth-child(2){left:88%; top:14%; animation-delay:-3s}
+.candles span:nth-child(3){left:20%; top:70%; animation-delay:-2s; opacity:.7}
+.candles span:nth-child(4){left:78%; top:62%; animation-delay:-4s; opacity:.7}
+.candles span:nth-child(5){left:50%; top:3%; animation-delay:-5s; opacity:.5; transform:scale(.7)}
+@keyframes float{50%{translate:0 -14px}}
+@keyframes flicker{from{transform:scale(1) rotate(-2deg)}to{transform:scale(1.08,.94) rotate(2deg)}}
+
+/* parchment */
+.parchment{
+  position:relative; background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(140,90,30,.25), transparent 60%),
+    linear-gradient(135deg, var(--parch), var(--parch-dark));
+  border-radius:14px; padding:24px 18px 26px; text-align:center;
+  box-shadow:0 0 0 2px #b8904f inset, 0 0 0 7px rgba(90,55,20,.15) inset, 0 18px 50px rgba(0,0,0,.6), 0 0 60px rgba(255,170,60,.15);
+}
+h1{font-family:var(--title); font-size:clamp(2rem, 9vw, 3.2rem); line-height:1.05; margin:.2em 0 .3em; color:#5a2c0c;
+  text-shadow:0 1px 0 #fff3cf, 0 0 18px rgba(217,164,65,.6)}
+.lead{font-size:1.3rem; line-height:1.4; margin:0 auto 1.1em; max-width:28em}
+label{display:block; font-size:1.35rem; margin-bottom:.4em; font-style:italic}
+input[type=text]{width:100%; max-width:420px; font:inherit; font-size:1.5rem; padding:14px 16px; text-align:center;
+  border-radius:12px; border:2px solid #a57b3c; background:#fffaf0; color:var(--ink); outline:none}
+input[type=text]:focus{border-color:var(--gold); box-shadow:0 0 0 4px rgba(217,164,65,.35)}
+.hat-wrap{display:flex; justify-content:center}
+.hat{width:min(58vw,230px); height:auto; filter:drop-shadow(0 10px 12px rgba(0,0,0,.35)); animation:bob 3.5s ease-in-out infinite; transform-origin:50% 90%}
+@keyframes bob{50%{transform:rotate(-3deg) translateY(-6px)}}
+
+.btn{display:block; width:100%; max-width:420px; margin:14px auto 0; min-height:64px; padding:14px 18px; font:inherit; font-size:1.4rem;
+  border-radius:16px; border:0; cursor:pointer; touch-action:manipulation; transition:transform .1s, filter .2s}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(#f3d27a,#c88c2a); color:#3a1f05; box-shadow:0 4px 0 #8a5a14, 0 8px 20px rgba(0,0,0,.35); font-weight:bold}
+.btn-ghost{background:rgba(255,250,235,.85); color:var(--ink); box-shadow:0 0 0 2px #a57b3c inset}
+.btn-danger{background:transparent; color:#7a1a10; box-shadow:0 0 0 2px #b0503f inset; font-size:1.1rem; min-height:54px}
+.toggles{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:16px}
+.chip{font:inherit; font-size:1.05rem; min-height:48px; padding:8px 14px; border-radius:999px; border:2px solid #a57b3c;
+  background:rgba(255,250,235,.7); color:var(--ink); cursor:pointer}
+.chip[aria-pressed=true]{background:#f3d27a}
+.link-btn{font:inherit; font-size:1.2rem; background:none; border:0; color:#5a2c0c; text-decoration:underline; margin-top:14px; min-height:48px; cursor:pointer}
+
+/* quiz */
+.progress{height:12px; background:rgba(90,55,20,.2); border-radius:99px; overflow:hidden}
+#progress-bar{height:100%; width:0; background:linear-gradient(90deg,#c88c2a,#f3d27a); transition:width .4s}
+.qcount{margin:.5em 0 0; font-style:italic; color:var(--ink-soft); font-size:1.1rem}
+.mini-hat svg{width:90px; height:auto; animation:bob 3s ease-in-out infinite; transform-origin:50% 90%}
+.question{font-size:clamp(1.6rem, 6.5vw, 2.2rem); line-height:1.2; margin:.1em 0 .4em; color:#4a2408}
+.speak-btn{margin-bottom:14px}
+.answers{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.answer{font:inherit; font-size:1.3rem; line-height:1.15; min-height:120px; padding:12px 8px; border-radius:16px; cursor:pointer;
+  border:2px solid #a57b3c; background:linear-gradient(#fffaf0,#f1deb4); color:var(--ink);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  box-shadow:0 4px 0 #a57b3c; touch-action:manipulation; transition:transform .1s}
+.answer .emoji{font-size:2.6rem; line-height:1}
+.answer:active, .answer.picked{transform:translateY(3px); box-shadow:0 1px 0 #a57b3c; background:#f3d27a}
+.answer:focus-visible, .btn:focus-visible, .chip:focus-visible{outline:4px solid #f3d27a; outline-offset:2px}
+.answers.tie .answer{min-height:110px}
+
+/* thinking */
+.thinking{min-height:70vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center}
+.hat.big{width:min(75vw,300px)}
+.wobble{animation:wobble 1.1s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg) translateY(-8px)}}
+.hat-speech{font-size:clamp(1.6rem,7vw,2.4rem); color:#ffe9b8; font-style:italic; min-height:3em; padding:0 10px;
+  text-shadow:0 0 20px rgba(255,180,80,.7); animation:fadeIn .5s}
+.hat .hat-mouth{animation:talk .35s infinite alternate}
+.thinking .hat-mouth{animation:talk .3s infinite alternate}
+@keyframes talk{to{transform:translateY(3px) scaleY(1.3); transform-origin:100px 112px}}
+
+/* result */
+.result-card{position:relative; text-align:center; border-radius:18px; padding:26px 18px 28px; color:#fff8e6;
+  background:radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.18), transparent 60%), linear-gradient(160deg, var(--house-a), #120a05 140%);
+  box-shadow:0 0 0 3px var(--house-b) inset, 0 0 0 8px rgba(0,0,0,.25) inset, 0 20px 60px rgba(0,0,0,.6), 0 0 80px color-mix(in srgb, var(--house-b) 40%, transparent);
+  animation:reveal .9s cubic-bezier(.2,1.4,.4,1)}
+@keyframes reveal{from{transform:scale(.6) rotate(-4deg); opacity:0}to{transform:none; opacity:1}}
+.crest{width:min(62vw,240px); margin:0 auto; filter:drop-shadow(0 10px 18px rgba(0,0,0,.5)); animation:shine 3s ease-in-out infinite}
+.crest svg{width:100%; height:auto; display:block}
+@keyframes shine{50%{filter:drop-shadow(0 10px 18px rgba(0,0,0,.5)) drop-shadow(0 0 16px var(--house-b))}}
+.result-pre{font-size:1.4rem; margin:.6em 0 0; font-style:italic}
+.house-name{font-family:var(--title); font-size:clamp(2.4rem, 11vw, 3.8rem); margin:.05em 0 .15em; color:var(--house-b);
+  text-shadow:0 2px 0 rgba(0,0,0,.5), 0 0 22px var(--house-b)}
+.house-traits{font-size:1.35rem; font-weight:bold; margin:0 0 .5em; letter-spacing:.02em}
+.house-desc{font-size:1.25rem; line-height:1.45; max-width:30em; margin:0 auto}
+.result-actions{margin-top:18px}
+.confetti{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:5}
+.confetti i{position:absolute; top:-20px; width:10px; height:14px; border-radius:2px; animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+/* board */
+.board-title{font-family:var(--title); font-size:clamp(1.7rem,7vw,2.4rem); margin:.1em 0 0; color:#5a2c0c}
+.small{margin:.2em 0 1em; font-style:italic; color:var(--ink-soft)}
+.board-houses{display:grid; grid-template-columns:1fr; gap:12px; text-align:left}
+.board-house{border-radius:14px; padding:12px 14px; color:#fff8e6; background:linear-gradient(135deg,var(--a),#1a0f07 160%); box-shadow:0 0 0 2px var(--b) inset}
+.board-house h3{margin:0 0 6px; font-family:var(--title); font-size:1.35rem; color:var(--b); display:flex; align-items:center; gap:8px}
+.board-house h3 .mini-crest{width:34px; height:40px}
+.board-house ul{list-style:none; margin:0; padding:0}
+.board-house li{display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:1.3rem; padding:6px 0; border-top:1px solid rgba(255,255,255,.15)}
+.board-house li:first-child{border-top:0}
+.board-house .none{font-style:italic; opacity:.7; font-size:1.05rem}
+.remove{font:inherit; font-size:1rem; min-height:44px; min-width:44px; padding:6px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.5); background:rgba(0,0,0,.25); color:#fff; cursor:pointer}
+.board-empty{font-size:1.25rem; font-style:italic}
+.footer{position:relative; z-index:1; color:#c9ad7f; font-size:.95rem; text-align:center; padding:14px 16px 22px; opacity:.85}
+
+@media (min-width:700px){
+  #app{padding-top:36px}
+  .parchment{padding:34px 40px 36px}
+  .answers{gap:16px}
+  .answer{min-height:140px; font-size:1.4rem}
+  .board-houses{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}

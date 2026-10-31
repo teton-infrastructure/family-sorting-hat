@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2a1a0e">
+<title>The Family Sorting Hat</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎩</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="candles" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<main id="app">
+  <!-- WELCOME -->
+  <section id="screen-welcome" class="screen active" aria-labelledby="welcome-title">
+    <div class="parchment">
+      <div class="hat-wrap"><svg class="hat" viewBox="0 0 200 170" aria-hidden="true"><use href="#hat-svg"/></svg></div>
+      <h1 id="welcome-title">The Family<br>Sorting Hat</h1>
+      <p class="lead">Put on the magic hat! Answer a few questions, and the Hat will choose your house.</p>
+      <form id="name-form" autocomplete="off">
+        <label for="name-input">What is your name?</label>
+        <input id="name-input" name="name" type="text" maxlength="24" placeholder="Type your name" required>
+        <button type="submit" class="btn btn-gold">✨ Put on the Hat</button>
+      </form>
+      <div class="toggles">
+        <button type="button" class="chip" id="sound-toggle" aria-pressed="false">🔇 Sound off</button>
+        <button type="button" class="chip" id="voice-toggle" aria-pressed="false">🗣️ Read aloud: off</button>
+      </div>
+      <button type="button" class="link-btn" id="to-board">📜 See the Family Board</button>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="screen-quiz" class="screen" aria-live="polite">
+    <div class="parchment">
+      <div class="progress" aria-hidden="true"><div id="progress-bar"></div></div>
+      <p class="qcount" id="qcount"></p>
+      <div class="mini-hat"><svg viewBox="0 0 200 170" aria-hidden="true"><use href="#hat-svg"/></svg></div>
+      <h2 id="question-text" class="question"></h2>
+      <button type="button" class="chip speak-btn" id="speak-q">🔊 Read it to me</button>
+      <div id="answers" class="answers"></div>
+    </div>
+  </section>
+
+  <!-- THINKING -->
+  <section id="screen-thinking" class="screen">
+    <div class="thinking">
+      <svg class="hat big wobble" viewBox="0 0 200 170" aria-hidden="true"><use href="#hat-svg"/></svg>
+      <p class="hat-speech" id="hat-speech">Hmm…</p>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="screen-result" class="screen">
+    <div class="result-card" id="result-card">
+      <div class="crest" id="crest"></div>
+      <p class="result-pre" id="result-pre"></p>
+      <h2 class="house-name" id="house-name"></h2>
+      <p class="house-traits" id="house-traits"></p>
+      <p class="house-desc" id="house-desc"></p>
+      <div class="result-actions">
+        <button type="button" class="btn btn-gold" id="again-btn">🎩 Sort another family member</button>
+        <button type="button" class="btn btn-ghost" id="result-board-btn">📜 Family Board</button>
+      </div>
+    </div>
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+  </section>
+
+  <!-- BOARD -->
+  <section id="screen-board" class="screen">
+    <div class="parchment">
+      <h2 class="board-title">📜 The Family Board</h2>
+      <p class="small">Saved on this device only.</p>
+      <div id="board-houses" class="board-houses"></div>
+      <p id="board-empty" class="board-empty">No one has been sorted yet. Who will be first?</p>
+      <div class="result-actions">
+        <button type="button" class="btn btn-gold" id="board-sort-btn">🎩 Sort another family member</button>
+        <button type="button" class="btn btn-danger" id="reset-btn">Reset the whole board</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">A fan-made family game. Not affiliated with Warner Bros. or Wizarding World.</footer>
+
+<!-- Original hat drawing -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="hatg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#8a6a43"/><stop offset="1" stop-color="#4a3420"/>
+    </linearGradient>
+    <symbol id="hat-svg" viewBox="0 0 200 170">
+      <ellipse cx="100" cy="150" rx="92" ry="16" fill="#3b2817"/>
+      <path d="M30 148 C55 120 62 95 78 70 C88 52 92 30 120 8 C112 32 126 40 118 58 C130 75 138 110 168 148 Z" fill="url(#hatg)" stroke="#2a1a0e" stroke-width="3"/>
+      <path d="M58 124 C80 116 120 116 146 124" fill="none" stroke="#2a1a0e" stroke-width="5" stroke-linecap="round"/>
+      <path class="hat-eye" d="M76 96 q10 -8 20 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
+      <path class="hat-eye" d="M108 94 q10 -8 20 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
+      <path class="hat-mouth" d="M84 112 q18 10 36 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
+      <path d="M95 60 q8 -6 16 2" fill="none" stroke="#2a1a0e" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+<script src="quiz.js"></script>
+</body>
+</html>
