@@ -118,6 +118,21 @@
   }
   function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
 
+  function askConfirm(title, msg, okLabel) {
+    return new Promise((resolve) => {
+      const back = document.createElement("div"); back.className = "modal-back";
+      back.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h3 id="modal-title">${esc(title)}</h3><p>${esc(msg)}</p>
+        <button type="button" class="btn btn-gold" data-ok>${esc(okLabel)}</button>
+        <button type="button" class="btn btn-ghost" data-cancel>Keep it</button></div>`;
+      const done = (v) => { back.remove(); document.removeEventListener("keydown", onKey); resolve(v); };
+      const onKey = (e) => { if (e.key === "Escape") done(false); };
+      back.addEventListener("click", (e) => { if (e.target === back || e.target.closest("[data-cancel]")) done(false); else if (e.target.closest("[data-ok]")) done(true); });
+      document.addEventListener("keydown", onKey);
+      document.body.appendChild(back); back.querySelector("[data-cancel]").focus();
+    });
+  }
+
   /* ---------- sound (only after the user turns it on) ---------- */
   let ctx = null;
   function tone(freq, start, dur, type = "sine", vol = 0.12) {
@@ -454,10 +469,13 @@
     const wb = e.target.closest(".mk"); if (wb) return openWandShop(wb.dataset.wand);
     const btn = e.target.closest(".remove"); if (!btn) return;
     const m = loadBoard().find((x) => x.id === btn.dataset.id);
-    if (m && confirm(`Remove ${m.name} from the Family Board?`)) { saveBoard(loadBoard().filter((x) => x.id !== m.id)); renderBoard(); }
+    if (!m) return;
+    askConfirm("Remove from the board?", `Remove ${m.name} (and their wand) from the Family Board?`, `Remove ${m.name}`)
+      .then((ok) => { if (ok) { saveBoard(loadBoard().filter((x) => x.id !== m.id)); renderBoard(); } });
   });
   $("reset-btn").addEventListener("click", () => {
-    if (confirm("Clear the whole Family Board? This can't be undone.")) { saveBoard([]); renderBoard(); }
+    askConfirm("Reset the board?", "Clear everyone and their wands from this device? This can't be undone.", "Clear the board")
+      .then((ok) => { if (ok) { saveBoard([]); renderBoard(); } });
   });
 
   /* ---------- starry enchanted ceiling (from Taylor's version) ---------- */

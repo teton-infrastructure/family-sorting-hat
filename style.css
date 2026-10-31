@@ -209,3 +209,98 @@ input[type=text]:focus{border-color:var(--gold); box-shadow:0 0 0 4px rgba(217,1
 .answer[aria-current=true]{background:linear-gradient(#fff3cc,#f3d27a)}
 .wand-stage .wand-glow{animation:pulse 2.2s ease-in-out infinite; transform-box:fill-box; transform-origin:center}
 @keyframes pulse{50%{opacity:.65; transform:scale(1.12)}}
+
+/* =====================================================================
+   BLUE THEME — palette and card styling taken from Taylor's
+   "Sorting Ceremony" version. Overrides the earlier parchment look.
+   House colors (result card, crests, board groups) are unchanged.
+   ===================================================================== */
+:root{
+  --night:#0f1424; --night-2:#171e33; --ink-blue:#232b45;
+  --candle:#e8c47a; --candle-dim:#a98f5c;
+  --text:#ece6d6; --muted:#a3a7b8;
+  --line:rgba(232,196,122,.22); --line-soft:rgba(232,196,122,.18); --line-strong:rgba(232,196,122,.4);
+  --ink:var(--text); --ink-soft:var(--muted);
+  color-scheme:dark;
+}
+body{color:var(--text); background:radial-gradient(ellipse at 50% -10%, #26304f 0%, var(--night) 60%) fixed, var(--night)}
+.parchment, .tonight{
+  background:linear-gradient(180deg,var(--night-2),var(--ink-blue));
+  border:1px solid var(--line); border-radius:6px; color:var(--text);
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+}
+h1{color:var(--candle); text-shadow:0 0 24px rgba(232,196,122,.25)}
+.eyebrow{color:var(--candle-dim)}
+.lead, .small, .board-empty{color:var(--text)}
+.small, .qcount, .tonight .muted{color:var(--muted)}
+label{color:var(--candle-dim); font-family:"IM Fell English SC", Georgia, serif; font-style:normal; letter-spacing:.12em}
+input[type=text]{background:var(--night); border:1px solid rgba(232,196,122,.3); color:var(--text); border-radius:4px}
+input[type=text]::placeholder{color:var(--muted); opacity:1}
+input[type=text]:focus{border-color:var(--candle); box-shadow:none; outline:2px solid var(--candle); outline-offset:1px}
+.hat{filter:drop-shadow(0 10px 18px rgba(0,0,0,.6)) drop-shadow(0 0 22px rgba(232,196,122,.18))}
+
+/* buttons */
+.btn{border-radius:4px; font-family:"IM Fell English SC", Georgia, serif; letter-spacing:.06em; transition:transform .15s, box-shadow .15s}
+.btn-gold{background:var(--candle); color:var(--night); box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.btn-gold:hover{box-shadow:0 0 22px rgba(232,196,122,.45)}
+.btn-ghost{background:transparent; color:var(--candle); box-shadow:none; border:1px solid var(--line-strong)}
+.btn-ghost:hover{background:rgba(232,196,122,.07); border-color:var(--candle)}
+.btn-wand{background:linear-gradient(180deg,#3a4a7e,#26304f); color:var(--candle); border:1px solid var(--line-strong); box-shadow:0 8px 20px rgba(0,0,0,.35), 0 0 18px rgba(232,196,122,.12) inset}
+.btn-wand:hover{box-shadow:0 0 22px rgba(232,196,122,.35)}
+.btn-danger{color:#f0a196; border:1px solid rgba(240,161,150,.55); box-shadow:none; border-radius:4px}
+.chip{background:rgba(15,20,36,.6); border:1px solid var(--line-strong); color:var(--text)}
+.chip[aria-pressed=true]{background:rgba(232,196,122,.16); border-color:var(--candle); color:var(--candle)}
+.link-btn, .tonight .link-btn{color:var(--candle)}
+.btn:focus-visible, .chip:focus-visible, .answer:focus-visible, .mode-btn:focus-visible, .link-btn:focus-visible, .who-list button:focus-visible{outline:2px solid var(--candle); outline-offset:3px}
+
+/* home extras */
+.houses li{background:rgba(15,20,36,.6); border:1px solid var(--line-soft); border-left:8px solid var(--c); border-radius:4px}
+.houses b{color:var(--text)}
+.houses span.t{color:var(--muted)}
+.mode-btn{background:rgba(15,20,36,.6); border:1px solid var(--line-soft); border-radius:4px; color:var(--text)}
+.mode-btn small{color:var(--muted)}
+.mode-btn[aria-pressed=true]{background:rgba(232,196,122,.14); border-color:var(--candle); box-shadow:0 0 0 1px var(--candle) inset}
+.tonight h2{color:var(--candle)}
+
+/* questions */
+.progress i{background:rgba(232,196,122,.15); height:4px; border-radius:2px}
+.progress i.on{background:var(--candle)}
+.question{color:var(--text); font-family:"IM Fell English", Georgia, serif}
+.answer{background:rgba(15,20,36,.6); border:1px solid var(--line-soft); border-radius:4px; color:var(--text); box-shadow:none; transition:border-color .15s, background .15s, transform .1s}
+.answer:hover{border-color:var(--candle); background:rgba(232,196,122,.07)}
+.answer:active, .answer.picked{transform:translateY(1px); box-shadow:none; background:rgba(232,196,122,.2); border-color:var(--candle)}
+.answer[aria-current=true]{background:rgba(232,196,122,.1); border-color:var(--candle-dim)}
+.answer .hint{color:var(--muted)}
+.answer.suggested{box-shadow:0 0 0 1px var(--candle) inset; border-color:var(--candle)}
+.answer .badge{background:var(--candle); color:var(--night)}
+
+/* thinking */
+.hat-speech{color:var(--candle); text-shadow:0 0 24px rgba(232,196,122,.35)}
+
+/* result card keeps house colors; just match the card corners */
+.result-card{border-radius:6px}
+.mix{background:rgba(15,20,36,.45); border-radius:4px}
+
+/* wand shop */
+.shop-title, .board-title{color:var(--candle)}
+.wand-stage{background:radial-gradient(ellipse at 70% 50%, #26304f, var(--night) 75%); box-shadow:none; border:1px solid var(--line); border-radius:6px}
+.who-list button{background:rgba(15,20,36,.6); color:var(--text); border:1px solid var(--line-soft); border-left:6px solid var(--c,var(--candle)); border-radius:4px}
+.who-list button:hover{border-color:var(--candle)}
+.wand-chosen{color:var(--candle)}
+.wand-tag{background:linear-gradient(180deg,var(--night-2),var(--ink-blue)); color:var(--text); border:1px solid var(--line-strong); border-radius:6px; box-shadow:0 10px 30px rgba(0,0,0,.4); transform:none}
+.wand-tag::before{background:var(--night); box-shadow:0 0 0 3px var(--candle)}
+.wand-tag h4{color:var(--candle)}
+.wand-tag .spec{color:var(--text)}
+.wand-tag .sig{color:var(--muted)}
+
+/* board */
+.board-house{border-radius:4px}
+.toast{background:var(--night-2); color:var(--text); border:1px solid var(--line-strong); border-radius:6px}
+.footer{color:var(--muted)}
+
+/* themed modal (replaces the browser's confirm box) */
+.modal-back{position:fixed; inset:0; z-index:20; background:rgba(5,8,16,.72); display:flex; align-items:center; justify-content:center; padding:20px; animation:fadeIn .2s ease}
+.modal{width:100%; max-width:400px; background:linear-gradient(180deg,var(--night-2),var(--ink-blue)); border:1px solid var(--line); border-radius:6px; padding:24px 20px 20px; text-align:center; color:var(--text); box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.modal h3{margin:0 0 8px; font-family:"IM Fell English SC", Georgia, serif; font-weight:400; letter-spacing:.08em; color:var(--candle); font-size:1.4rem}
+.modal p{margin:0 0 6px; font-size:1.2rem; line-height:1.4}
+.modal .btn{margin-top:12px}

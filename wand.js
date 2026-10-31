@@ -199,9 +199,12 @@
     x.textAlign = "center"; x.fillStyle = "#e8c47a"; x.font = "bold 54px Georgia, serif";
     x.fillText(d.title, W / 2, 90);
     x.drawImage(img, 40, 125, 1120, 288); URL.revokeObjectURL(url);
-    x.fillStyle = "#f4e4c1"; x.beginPath(); x.roundRect ? x.roundRect(100, 450, 1000, 250, 14) : x.rect(100, 450, 1000, 250); x.fill();
-    x.fillStyle = "#3a2412"; x.font = "bold 36px Georgia, serif"; x.fillText(d.spec, W / 2, 510);
+    const cg = x.createLinearGradient(0, 450, 0, 700); cg.addColorStop(0, "#171e33"); cg.addColorStop(1, "#232b45");
+    x.fillStyle = cg; x.beginPath(); x.roundRect ? x.roundRect(100, 450, 1000, 250, 6) : x.rect(100, 450, 1000, 250); x.fill();
+    x.strokeStyle = "rgba(232,196,122,.4)"; x.lineWidth = 2; x.stroke();
+    x.fillStyle = "#ece6d6"; x.font = "bold 36px Georgia, serif"; x.fillText(d.spec, W / 2, 510);
     x.font = "30px Georgia, serif"; x.fillText(d.look, W / 2, 560);
+    x.fillStyle = "#a3a7b8";
     wrap(x, d.flavor, W / 2, 610, 920, 36, "italic 26px Georgia, serif");
     x.fillStyle = "#a3a7b8"; x.font = "20px Georgia, serif"; x.fillText("The Family Sorting Ceremony · a fan-made family game", W / 2, 740);
     return new Promise((res) => c.toBlob(res, "image/png"));
