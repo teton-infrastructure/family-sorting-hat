@@ -10,14 +10,14 @@ html,body{margin:0;min-height:100%}
 body{
   font-family:var(--serif); color:var(--ink);
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(255,190,90,.35), transparent 55%),
-    radial-gradient(ellipse at 10% 100%, rgba(255,140,40,.18), transparent 50%),
-    radial-gradient(ellipse at 90% 100%, rgba(255,140,40,.18), transparent 50%),
-    linear-gradient(#24160b, var(--night));
+    radial-gradient(ellipse at 50% -10%, #2b3557 0%, #0f1424 62%) fixed,
+    radial-gradient(ellipse at 50% 110%, rgba(255,150,50,.22), transparent 55%) fixed,
+    #0f1424;
   min-height:100vh; display:flex; flex-direction:column; align-items:center;
   -webkit-tap-highlight-color:transparent; overflow-x:hidden;
 }
 #app{width:100%; max-width:720px; padding:18px 14px 8px; flex:1; position:relative; z-index:1}
+#stars{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0}
 .screen{display:none; animation:fadeIn .5s ease}
 .screen.active{display:block}
 @keyframes fadeIn{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
@@ -72,8 +72,10 @@ input[type=text]:focus{border-color:var(--gold); box-shadow:0 0 0 4px rgba(217,1
 .link-btn{font:inherit; font-size:1.2rem; background:none; border:0; color:#5a2c0c; text-decoration:underline; margin-top:14px; min-height:48px; cursor:pointer}
 
 /* quiz */
-.progress{height:12px; background:rgba(90,55,20,.2); border-radius:99px; overflow:hidden}
-#progress-bar{height:100%; width:0; background:linear-gradient(90deg,#c88c2a,#f3d27a); transition:width .4s}
+.progress{display:flex; gap:4px}
+.progress i{flex:1; height:8px; background:rgba(90,55,20,.2); border-radius:4px; transition:background .3s}
+.progress i.on{background:linear-gradient(90deg,#c88c2a,#f3d27a)}
+
 .qcount{margin:.5em 0 0; font-style:italic; color:var(--ink-soft); font-size:1.1rem}
 .mini-hat svg{width:90px; height:auto; animation:bob 3s ease-in-out infinite; transform-origin:50% 90%}
 .question{font-size:clamp(1.6rem, 6.5vw, 2.2rem); line-height:1.2; margin:.1em 0 .4em; color:#4a2408}
@@ -133,11 +135,77 @@ input[type=text]:focus{border-color:var(--gold); box-shadow:0 0 0 4px rgba(217,1
 .board-empty{font-size:1.25rem; font-style:italic}
 .footer{position:relative; z-index:1; color:#c9ad7f; font-size:.95rem; text-align:center; padding:14px 16px 22px; opacity:.85}
 
+
+/* merged extras */
+.eyebrow{font-family:"IM Fell English SC", Georgia, serif; letter-spacing:.18em; font-size:.95rem; color:#8a6232; text-transform:none}
+.houses{list-style:none; margin:4px 0 18px; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:8px; text-align:left}
+.houses li{display:flex; gap:8px; align-items:center; background:rgba(255,250,235,.55); border-radius:10px; padding:8px; min-width:0; border-left:8px solid var(--c)}
+.houses .an{font-size:1.6rem}
+.houses b{font-family:"IM Fell English SC", Georgia, serif; font-size:1.1rem; display:block}
+.houses span.t{display:block; font-size:.9rem; color:var(--ink-soft); line-height:1.2}
+.mode{border:0; padding:0; margin:14px auto 0; display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:420px}
+.mode-btn{font:inherit; font-size:1.15rem; min-height:84px; border-radius:14px; border:2px solid #a57b3c; background:rgba(255,250,235,.6); color:var(--ink); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px}
+.mode-btn .emoji{font-size:1.8rem}
+.mode-btn small{font-size:.85rem; color:var(--ink-soft); font-style:italic}
+.mode-btn[aria-pressed=true]{background:#f3d27a; box-shadow:0 0 0 3px #c88c2a inset}
+.btn-wand{background:linear-gradient(#4b3a7a,#2a2050); color:#ffeec2; box-shadow:0 4px 0 #17112f, 0 8px 20px rgba(0,0,0,.35), 0 0 18px rgba(170,140,255,.25) inset; font-weight:bold}
+.tonight{margin:18px 0 0; padding:18px; border-radius:12px; background:linear-gradient(180deg,#171e33,#232b45); border:1px solid rgba(232,196,122,.25); color:#ece6d6; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.tonight h2{font-family:"IM Fell English SC", Georgia, serif; font-weight:400; letter-spacing:.1em; color:#e8c47a; margin:0 0 10px; font-size:1.3rem}
+.tonight-list{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
+.tonight-list .pill{font-size:1.1rem; padding:6px 12px; border-radius:999px; border:1px solid var(--c); color:#fff; background:color-mix(in srgb, var(--c) 35%, transparent)}
+.tonight .muted{color:#a3a7b8; font-style:italic; margin:0}
+.tonight .link-btn{color:#e8c47a}
+.house-motto{font-style:italic; font-size:1.2rem; margin:0 0 10px; opacity:.9}
+.traits{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 12px}
+.traits span{font-family:"IM Fell English SC", Georgia, serif; letter-spacing:.06em; font-size:1.05rem; border:1px solid var(--house-b); color:var(--house-b); padding:4px 12px; border-radius:999px; background:rgba(0,0,0,.2)}
+.mix{margin:16px auto 0; max-width:420px; text-align:left; background:rgba(0,0,0,.22); border-radius:12px; padding:12px 14px}
+.mix h3{margin:0 0 8px; font-family:"IM Fell English SC", Georgia, serif; font-weight:400; letter-spacing:.08em; font-size:1.1rem; text-align:center}
+.bars{display:flex; flex-direction:column; gap:8px}
+.bar{display:grid; grid-template-columns:28px 92px 1fr 40px; gap:8px; align-items:center; font-size:1rem}
+.bar .t{height:10px; background:rgba(255,255,255,.12); border-radius:5px; overflow:hidden}
+.bar .t div{height:100%; width:0; border-radius:5px; transition:width 1s ease}
+.bar .n{text-align:right; font-variant-numeric:tabular-nums}
+.row{display:flex; gap:10px; max-width:420px; margin:0 auto}
+.row .btn{flex:1}
+/* wand shop */
+.shop-title{font-family:var(--title); font-size:clamp(1.6rem,7vw,2.3rem); margin:.1em 0 .2em; color:#5a2c0c}
+.wand-stage{position:relative; border-radius:14px; background:radial-gradient(ellipse at 70% 50%, #2b3557, #0f1424 75%); box-shadow:0 0 0 2px #a57b3c inset, 0 8px 22px rgba(0,0,0,.35); padding:6px; margin:0 0 12px}
+.wand-stage svg{display:block; width:100%; height:auto}
+.wand-stage.big{margin-top:6px}
+.who-list{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:0 0 16px}
+.who-list button{font:inherit; font-size:1.2rem; min-height:56px; padding:8px 16px; border-radius:14px; border:2px solid var(--c,#a57b3c); background:rgba(255,250,235,.8); cursor:pointer; color:var(--ink)}
+.wand-nav{margin-top:12px}
+.wand-nav .btn{margin-top:0; min-height:56px; font-size:1.15rem}
+.answer .hint{font-size:.95rem; font-style:italic; color:var(--ink-soft)}
+.answer.suggested{box-shadow:0 4px 0 #a57b3c, 0 0 0 3px #c88c2a inset}
+.answer .badge{font-size:.8rem; background:#c88c2a; color:#fff; border-radius:999px; padding:1px 8px}
+.wand-chosen{font-size:1.3rem; font-style:italic; margin:0}
+.wand-tag{position:relative; margin:6px auto 0; max-width:440px; text-align:left; padding:16px 18px 14px; background:linear-gradient(#fffaf0,#efdcb0); border-radius:6px; box-shadow:0 0 0 1px #a57b3c inset, 0 6px 16px rgba(0,0,0,.25); transform:rotate(-1deg)}
+.wand-tag::before{content:""; position:absolute; top:12px; right:14px; width:12px; height:12px; border-radius:50%; background:#0f1424; box-shadow:0 0 0 3px #c88c2a}
+.wand-tag h4{margin:0 0 6px; font-family:"IM Fell English SC", Georgia, serif; font-weight:400; font-size:1.3rem; letter-spacing:.05em; color:#5a2c0c}
+.wand-tag p{margin:0 0 6px; font-size:1.15rem; line-height:1.4}
+.wand-tag .spec{font-size:1.25rem; font-weight:bold}
+.wand-tag .sig{font-style:italic; text-align:right; color:var(--ink-soft); font-size:1rem}
+.board-house .wand-thumb{display:block; width:110px; height:auto; border-radius:6px; background:#0f1424}
+.board-house li .who{display:flex; flex-direction:column; gap:4px; min-width:0}
+.board-house li .acts{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
+.board-house .mk{font:inherit; font-size:1rem; min-height:44px; padding:6px 10px; border-radius:10px; border:1px solid rgba(255,255,255,.5); background:rgba(255,255,255,.15); color:#fff; cursor:pointer}
+.toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:#1b2238; color:#ffeec2; padding:12px 18px; border-radius:12px; z-index:10; font-size:1.15rem; box-shadow:0 8px 22px rgba(0,0,0,.4); border:1px solid #e8c47a}
+
 @media (min-width:700px){
   #app{padding-top:36px}
   .parchment{padding:34px 40px 36px}
   .answers{gap:16px}
   .answer{min-height:140px; font-size:1.4rem}
   .board-houses{grid-template-columns:1fr 1fr}
+  .houses{grid-template-columns:repeat(4,1fr)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+.answers.text-answers{grid-template-columns:1fr}
+.answers.text-answers .answer{min-height:72px; font-size:1.2rem; text-align:left; align-items:flex-start; padding:14px 16px}
+.board-house .wand-thumb{width:150px; padding:2px}
+.board-house .wand-thumb svg{display:block; width:100%; height:auto}
+.btn:disabled{opacity:.45; cursor:default}
+.answer[aria-current=true]{background:linear-gradient(#fff3cc,#f3d27a)}
+.wand-stage .wand-glow{animation:pulse 2.2s ease-in-out infinite; transform-box:fill-box; transform-origin:center}
+@keyframes pulse{50%{opacity:.65; transform:scale(1.12)}}

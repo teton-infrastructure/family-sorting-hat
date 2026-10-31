@@ -4,40 +4,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#2a1a0e">
-<title>The Family Sorting Hat</title>
+<meta name="theme-color" content="#0f1424">
+<title>The Family Sorting Ceremony</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎩</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<canvas id="stars" aria-hidden="true"></canvas>
 <div class="candles" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
 <main id="app">
   <!-- WELCOME -->
   <section id="screen-welcome" class="screen active" aria-labelledby="welcome-title">
     <div class="parchment">
+      <div class="eyebrow">The Family · Opening Feast</div>
       <div class="hat-wrap"><svg class="hat" viewBox="0 0 200 170" aria-hidden="true"><use href="#hat-svg"/></svg></div>
-      <h1 id="welcome-title">The Family<br>Sorting Hat</h1>
+      <h1 id="welcome-title">The Sorting<br>Ceremony</h1>
       <p class="lead">Put on the magic hat! Answer a few questions, and the Hat will choose your house.</p>
+      <ul class="houses" id="house-preview"></ul>
       <form id="name-form" autocomplete="off">
-        <label for="name-input">What is your name?</label>
+        <label for="name-input">Who is being sorted?</label>
         <input id="name-input" name="name" type="text" maxlength="24" placeholder="Type your name" required>
+        <fieldset class="mode" aria-label="Which questions?">
+          <button type="button" class="mode-btn" data-mode="kids" aria-pressed="true"><span class="emoji">🧒</span>Young wizard<small>short &amp; picture questions</small></button>
+          <button type="button" class="mode-btn" data-mode="grown" aria-pressed="false"><span class="emoji">🧙</span>Grown-up<small>trickier questions</small></button>
+        </fieldset>
         <button type="submit" class="btn btn-gold">✨ Put on the Hat</button>
       </form>
+      <button type="button" class="btn btn-wand" id="home-wand-btn">🪄 Design a Wand</button>
       <div class="toggles">
         <button type="button" class="chip" id="sound-toggle" aria-pressed="false">🔇 Sound off</button>
         <button type="button" class="chip" id="voice-toggle" aria-pressed="false">🗣️ Read aloud: off</button>
       </div>
-      <button type="button" class="link-btn" id="to-board">📜 See the Family Board</button>
+    </div>
+    <div class="tonight" id="tonight">
+      <h2>Sorted Tonight</h2>
+      <div id="tonight-list" class="tonight-list"></div>
+      <p class="muted" id="tonight-empty">Nobody has been sorted yet. Hand the phone around the table!</p>
+      <button type="button" class="link-btn" id="to-board">📜 Open the Family Board</button>
     </div>
   </section>
 
   <!-- QUIZ -->
   <section id="screen-quiz" class="screen" aria-live="polite">
     <div class="parchment">
-      <div class="progress" aria-hidden="true"><div id="progress-bar"></div></div>
+      <div class="progress" id="progress" aria-hidden="true"></div>
       <p class="qcount" id="qcount"></p>
       <div class="mini-hat"><svg viewBox="0 0 200 170" aria-hidden="true"><use href="#hat-svg"/></svg></div>
       <h2 id="question-text" class="question"></h2>
@@ -60,25 +73,85 @@
       <div class="crest" id="crest"></div>
       <p class="result-pre" id="result-pre"></p>
       <h2 class="house-name" id="house-name"></h2>
-      <p class="house-traits" id="house-traits"></p>
+      <p class="house-motto" id="house-motto"></p>
+      <div class="traits" id="house-traits"></div>
       <p class="house-desc" id="house-desc"></p>
+      <div class="mix">
+        <h3>Your house mix</h3>
+        <div class="bars" id="bars"></div>
+      </div>
       <div class="result-actions">
+        <button type="button" class="btn btn-wand" id="result-wand-btn">🪄 Design your wand</button>
         <button type="button" class="btn btn-gold" id="again-btn">🎩 Sort another family member</button>
-        <button type="button" class="btn btn-ghost" id="result-board-btn">📜 Family Board</button>
+        <div class="row">
+          <button type="button" class="btn btn-ghost" id="retake-btn">🔁 Retake</button>
+          <button type="button" class="btn btn-ghost" id="result-board-btn">📜 Board</button>
+        </div>
       </div>
     </div>
     <div class="confetti" id="confetti" aria-hidden="true"></div>
+  </section>
+
+  <!-- WAND SHOP -->
+  <section id="screen-wand" class="screen">
+    <div class="parchment wand-shop">
+      <div class="eyebrow">The Wand Shop</div>
+      <h2 class="shop-title" id="wand-title">Design a Wand</h2>
+
+      <!-- step 0: who -->
+      <div id="wand-who" class="wand-step">
+        <p class="lead">Whose wand are we making?</p>
+        <div id="wand-who-list" class="who-list"></div>
+        <form id="wand-who-form" autocomplete="off">
+          <label for="wand-name">Or type a name</label>
+          <input id="wand-name" type="text" maxlength="24" placeholder="Type your name">
+          <button type="submit" class="btn btn-gold">Next ➜</button>
+        </form>
+      </div>
+
+      <!-- steps 1-6 -->
+      <div id="wand-build" class="wand-step" hidden>
+        <div class="wand-stage" id="wand-stage" aria-label="Wand preview"></div>
+        <div class="progress" id="wand-progress" aria-hidden="true"></div>
+        <p class="qcount" id="wand-count"></p>
+        <h3 class="question" id="wand-q"></h3>
+        <button type="button" class="chip speak-btn" id="wand-speak">🔊 Read it to me</button>
+        <div id="wand-opts" class="answers"></div>
+        <div class="row wand-nav">
+          <button type="button" class="btn btn-ghost" id="wand-back">⬅ Back</button>
+          <button type="button" class="btn btn-ghost" id="wand-surprise">🎲 Surprise me</button>
+        </div>
+      </div>
+
+      <!-- done -->
+      <div id="wand-done" class="wand-step" hidden>
+        <p class="wand-chosen" id="wand-chosen"></p>
+        <div class="wand-stage big" id="wand-final"></div>
+        <div class="wand-tag" id="wand-tag"></div>
+        <div class="result-actions">
+          <button type="button" class="btn btn-gold" id="wand-save">💾 Save to Family Board</button>
+          <button type="button" class="btn btn-ghost" id="wand-download">⬇️ Download picture</button>
+          <div class="row">
+            <button type="button" class="btn btn-ghost" id="wand-redo">✏️ Change it</button>
+            <button type="button" class="btn btn-ghost" id="wand-board">📜 Board</button>
+          </div>
+          <button type="button" class="btn btn-ghost" id="wand-home">🏠 Home</button>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- BOARD -->
   <section id="screen-board" class="screen">
     <div class="parchment">
       <h2 class="board-title">📜 The Family Board</h2>
-      <p class="small">Saved on this device only.</p>
+      <p class="small">Saved on this device only. Nothing you enter leaves this device.</p>
       <div id="board-houses" class="board-houses"></div>
       <p id="board-empty" class="board-empty">No one has been sorted yet. Who will be first?</p>
       <div class="result-actions">
         <button type="button" class="btn btn-gold" id="board-sort-btn">🎩 Sort another family member</button>
+        <button type="button" class="btn btn-wand" id="board-wand-btn">🪄 Design a Wand</button>
+        <button type="button" class="btn btn-ghost" id="board-home-btn">🏠 Home</button>
         <button type="button" class="btn btn-danger" id="reset-btn">Reset the whole board</button>
       </div>
     </div>
@@ -87,7 +160,6 @@
 
 <footer class="footer">A fan-made family game. Not affiliated with Warner Bros. or Wizarding World.</footer>
 
-<!-- Original hat drawing -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <linearGradient id="hatg" x1="0" x2="1" y1="0" y2="1">
@@ -97,13 +169,14 @@
       <ellipse cx="100" cy="150" rx="92" ry="16" fill="#3b2817"/>
       <path d="M30 148 C55 120 62 95 78 70 C88 52 92 30 120 8 C112 32 126 40 118 58 C130 75 138 110 168 148 Z" fill="url(#hatg)" stroke="#2a1a0e" stroke-width="3"/>
       <path d="M58 124 C80 116 120 116 146 124" fill="none" stroke="#2a1a0e" stroke-width="5" stroke-linecap="round"/>
-      <path class="hat-eye" d="M76 96 q10 -8 20 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
-      <path class="hat-eye" d="M108 94 q10 -8 20 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
+      <path d="M76 96 q10 -8 20 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
+      <path d="M108 94 q10 -8 20 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
       <path class="hat-mouth" d="M84 112 q18 10 36 0" fill="none" stroke="#1d1209" stroke-width="5" stroke-linecap="round"/>
       <path d="M95 60 q8 -6 16 2" fill="none" stroke="#2a1a0e" stroke-width="3" stroke-linecap="round"/>
     </symbol>
   </defs>
 </svg>
+<script src="wand.js"></script>
 <script src="quiz.js"></script>
 </body>
 </html>
